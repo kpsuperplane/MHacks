@@ -5,6 +5,7 @@ words/*
 trump.mp4
 trump.wav
 
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -119,3 +120,4 @@ Thumbs.db
 venv
 node_modules
 .sass-cache
+
