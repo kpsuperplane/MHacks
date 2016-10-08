@@ -1,5 +1,5 @@
 from moviepy.editor import *
-from TimeStamp import TimeStamp
+from src.TimeStamp import TimeStamp
 
 clips = {}
 
