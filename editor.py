@@ -15,5 +15,5 @@ def combineVideos(parts):
     return concatenate_videoclips(clips)
 
 
-video = "scratch/young.mp4"
-combineVideos([TimeStamp(video, 0, 10), TimeStamp(video, 50, 10)]).write_videofile("scratch/young-cut.mp4") # Many options...
+#video = "scratch/young.mp4"
+#combineVideos([TimeStamp(video, 0, 10), TimeStamp(video, 50, 10)]).write_videofile("scratch/young-cut.mp4") # Many options...
