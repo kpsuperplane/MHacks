@@ -12,9 +12,9 @@ from pocketsphinx import Pocketsphinx, get_model_path, get_data_path, AudioFile
 
 model_path = get_model_path()
 
-#file = "test/trumpshort.wav"
+file = "test/trumpshort.wav"
 #file = "firework2.wav"
-file = "test2.wav"
+#file = "test2.wav"
 
 config = {
     'hmm': os.path.join(model_path, 'en-us'),
