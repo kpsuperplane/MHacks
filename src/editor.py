@@ -1,5 +1,4 @@
 from moviepy.editor import *
-#from . import TimeStamp
 import wave
 
 clips = {}
@@ -44,4 +43,3 @@ def combineAudio(parts, outfile):
     for clip, data in audioClips.items():
         data.close()
         
-    
