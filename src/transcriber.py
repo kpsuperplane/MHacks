@@ -12,7 +12,14 @@ from pocketsphinx import Pocketsphinx, get_model_path, get_data_path, AudioFile
 
 model_path = get_model_path()
 
-file = "test/forward.wav"
+if len(sys.argv) < 2:
+    sys.exit(0)
+
+name = sys.argv[-1]
+
+print(name)
+
+file = "speech/%s.wav"%name
 #file = "firework2.wav"
 #file = "test2.wav"
 
@@ -59,9 +66,10 @@ sampWidth = origAudio.getsampwidth()
 
 print(origAudio.getparams())
 
-shutil.rmtree('words/', ignore_errors=True)
+os.makedirs('speech/%s'%name,exist_ok=True)
+#shutil.rmtree('speech/%s/'%, ignore_errors=True)
 
-with open('words.pickle', 'wb') as f:
+with open('speech/%s.pickle'%name, 'wb') as f:
   pickle.dump(words, f)
 
 for word in words:
@@ -69,9 +77,9 @@ for word in words:
     seg = words[word][i]
     _, acc, start, end = seg
 
-    os.makedirs('words/%s'%word,exist_ok=True)
+    os.makedirs('speech/%s/%s'%(name, word),exist_ok=True)
 
-    segname = "words/%s/%d.wav"%(word,i)
+    segname = "speech/%s/%s/%d.wav"%(name, word,i)
 
     origAudio.setpos((start) * 160)
     chunkData = origAudio.readframes((end - start) * 160)
