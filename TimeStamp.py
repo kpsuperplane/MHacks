@@ -16,3 +16,15 @@ class TimeStamp:
     
     def getName(self):
         return self.video_base_name
+
+    # Returns a string interpretation of this to store in a .txt file
+    def toString(self):
+        return self.video_base_name + " " + str(self.begin_time) + " " + str(self.duration_time)
+
+
+# Inverts TimeStamp.toString
+def stringToTimeStamp(s):
+    args = s.split(" ")
+    video_base_name = args[0]
+    begin_time, duration_time = float(args[1]), float(args[2])
+    return TimeStamp(video_base_name,begin_time,duration_time)
