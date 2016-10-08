@@ -58,6 +58,8 @@ def getPhonemes(words):
                 pronunciation = pronunciation[0]
                 for phoneme in pronunciation:
                     last = phoneme[-1:]
-                    wordneme.append(([phoneme[:], 0] if (last < '0' or last > '9') else [phoneme[0:-1], int(last)]))
+                    wordneme.append([phoneme, 0])
+                    #wordneme.append(([phoneme[:], 0] if (last < '0' or last > '9') else [phoneme[0:-1], int(last)]))
             phonemes[word] = wordneme
+    #print(phonemes)
     return phonemes

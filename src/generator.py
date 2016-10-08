@@ -1,5 +1,5 @@
-from matcher import match
-from pickleLoader import *
+from . import matcher
+from . import pickleLoader
 
 def generateFromText(text, pickle):
     words = text.split(" ")
@@ -8,6 +8,5 @@ def generateFromText(text, pickle):
     for word in words:
         input.append([length, len(word), word.lower()])
         length = length + len(word)
-    return match(input, loadOccurences(pickle))
+    return matcher.match(input, pickleLoader.loadOccurences(pickle))
 
-print(generateFromText("I like to eat pie because it tastes great", "words.pickle"))
