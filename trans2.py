@@ -17,8 +17,10 @@ config = {
     'dict': os.path.join(model_path, 'cmudict-en-us.dict')
 }
 
-file = "trumpshort.wav"
-#file = "forward.wav"
+#file = "trumpshort.wav"
+file = "forward.wav"
+file = "firework.wav"
+
 
 ps = Pocketsphinx(**config)
 ps.decode(
