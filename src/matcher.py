@@ -55,5 +55,3 @@ def match(song, dictionary):
 
 
     
-
-print(match([[123, 2, "andrew"]], {"anna": [[23, 1, "anna.mp3"]], "drink": [[16, 1, "drink.mp3"]], "euphoria": [[1, 2, "euphoria.mp3"]]}))
