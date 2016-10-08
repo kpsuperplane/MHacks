@@ -18,4 +18,7 @@ def speech_to_audio(words):
         output.writeframes(datum[1])
     output.close()
 
+sent = "president obama is a african muslim radical" #  a white republican must be president"
+speech_to_audio(sent.split(" "))
+
 

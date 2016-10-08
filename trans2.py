@@ -12,7 +12,7 @@ from pocketsphinx import Pocketsphinx, get_model_path, get_data_path, AudioFile
 
 model_path = get_model_path()
 
-file = "test/trumpshort.wav"
+file = "rosie1.wav"
 #file = "firework2.wav"
 #file = "test2.wav"
 
@@ -59,7 +59,7 @@ sampWidth = origAudio.getsampwidth()
 
 print(origAudio.getparams())
 
-shutil.rmtree('words/', ignore_errors=True)
+#shutil.rmtree('words/', ignore_errors=True)
 
 with open('words.pickle', 'wb') as f:
   pickle.dump(words, f)
