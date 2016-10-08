@@ -1,52 +1,51 @@
 #!/usr/bin/env python
 from os import environ, path
-import os
+import os,sys
 import shutil
 
 from pocketsphinx.pocketsphinx import *
 from sphinxbase.sphinxbase import *
 from moviepy.editor import *
 
-from pocketsphinx import Pocketsphinx, get_model_path, get_data_path
+from pocketsphinx import Pocketsphinx, get_model_path, get_data_path, AudioFile
 
 model_path = get_model_path()
+
+file = "trumpshort.wav"
+#file = "trumpshort2.wav"
 
 config = {
     'hmm': os.path.join(model_path, 'en-us'),
     'lm': os.path.join(model_path, 'en-us.lm.bin'),
-    'dict': os.path.join(model_path, 'cmudict-en-us.dict')
+    'dict': os.path.join(model_path, 'cmudict-en-us.dict'),
+    'audio_file': file,
+    'buffer_size': 1024,
+    'no_search': False,
+    'full_utt': False,
 }
 
-#file = "trumpshort.wav"
-file = "forward.wav"
-file = "firework.wav"
-
-
-ps = Pocketsphinx(**config)
-ps.decode(
-    audio_file=file,
-    buffer_size=2048,
-    no_search=False,
-    full_utt=False,
-)
-
 words = {}
-minframe = 1e10
 
-for seg in ps.segments(detailed=True):
-  #print(seg.start_frame, seg.end_frame, seg.word)
-  print(seg)
+def proc_segs(segs):
+  for seg in segs:
+    #print(seg.start_frame, seg.end_frame, seg.word)
+    print(seg)
 
-  word, acc, start, end = seg
+    word, acc, start, end = seg
 
-  word = word.split('(')[0]
+    word = word.split('(')[0]
 
-  minframe = min(minframe, start)
+    if word.isalpha():
+      if not word in words:
+        words[word] = []
+      words[word].append(seg)
 
-  if word.isalpha():
-    if not word in words:
-      words[word] = []
-    words[word].append(seg)
+audio = AudioFile(**config)
+for phrase in audio:
+    print(phrase)
+    proc_segs(phrase.segments(detailed=True))
+
+#proc_segs(ps.segments(detailed=True))
 
 clip = AudioFileClip(file)
 
@@ -69,7 +68,7 @@ for word in words:
 
     segname = "words/%s/%d.wav"%(word,i)
 
-    origAudio.setpos((start - minframe) * 160)
+    origAudio.setpos((start) * 160)
     chunkData = origAudio.readframes((end - start) * 160)
 
     chunkAudio = wave.open(segname,'wb')
