@@ -2,6 +2,7 @@
 from os import environ, path
 import os,sys
 import shutil
+import pickle
 
 from pocketsphinx.pocketsphinx import *
 from sphinxbase.sphinxbase import *
@@ -11,8 +12,9 @@ from pocketsphinx import Pocketsphinx, get_model_path, get_data_path, AudioFile
 
 model_path = get_model_path()
 
-file = "trumpshort.wav"
-#file = "trumpshort2.wav"
+file = "test/trumpshort.wav"
+#file = "firework2.wav"
+#file = "test2.wav"
 
 config = {
     'hmm': os.path.join(model_path, 'en-us'),
@@ -58,6 +60,9 @@ sampWidth = origAudio.getsampwidth()
 print(origAudio.getparams())
 
 shutil.rmtree('words/', ignore_errors=True)
+
+with open('words.pickle', 'wb') as f:
+  pickle.dump(words, f)
 
 for word in words:
   for i in range(len(words[word])):
