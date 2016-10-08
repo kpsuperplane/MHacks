@@ -1,19 +1,19 @@
 from moviepy.editor import *
+from TimeStamp import TimeStamp
 
 clips = {}
 
 def getVideoClip(clip):
     if (not (clip in clips)):
-        clips[clip] = VideoFileClip("scratch/young.mp4")
+        clips[clip] = VideoFileClip(clip)
     return clips[clip]
 
 def combineVideos(parts):
     clips = []
     for part in parts:
-        clips.append(getVideoClip(part[0]).subclip(part[1], part[1] + part[2]))
-        part[0]
+        clips.append(getVideoClip(part.getName()).subclip(part.getBegin(), part.getBegin() + part.getDuration()))
     return concatenate_videoclips(clips)
 
 
 video = "scratch/young.mp4"
-combineVideos([[video, 0, 10], [video, 40, 4]]).write_videofile("scratch/young-cut.mp4") # Many options...
+combineVideos([TimeStamp(video, 0, 10), TimeStamp(video, 50, 10)]).write_videofile("scratch/young-cut.mp4") # Many options...

@@ -1,4 +1,4 @@
 from moviepy.editor import *
 
 def videoToAudio(file, output):
-    getVideoClip(file).write_audiofile(output)
+    VideoFileClip(file).audio.write_audiofile(output)
