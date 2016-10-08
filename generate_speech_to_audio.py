@@ -3,7 +3,7 @@ from src.editor import *
 import os, wave,pickle,random
 import re
 
-name = "obama"
+name = "trump"
 
 v = pickle.load(open("speech/%s.pickle"%name,"rb"))
 def find_best_match(word):
@@ -61,8 +61,11 @@ output.setnchannels(1)
 output.setsampwidth(2)
 output.setframerate(16000)
 
-for i in range(5):
-    speech_to_audio(text_model.make_short_sentence(200), output)
+# for i in range(5):
+#     speech_to_audio(text_model.make_short_sentence(200), output)
+
+speech_to_audio(" ".join(['china'] * 10), output)
+
 
 output.close()
 
