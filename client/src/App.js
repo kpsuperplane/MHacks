@@ -16,6 +16,9 @@ class App extends Component {
   submit(){
     this.setState({appState: 1});
   }
+  submitLucky(){
+    this.setState({appState: 1, input: ''});
+  }
   videoPlayed(){
     var makeActive = this.setState.bind(this, {active: true});
     const {refs} = this;
@@ -45,7 +48,7 @@ class App extends Component {
               </div>
               <div id="button-container">
                 <div className={(this.state.appState==0)?"container-section show":"container-section"}>
-                  <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this)}>Make My Own</button></div><button onClick={this.submit.bind(this)}>I'm Feeling Lucky</button>
+                  <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this)}>Make My Own</button></div><button onClick={this.submitLucky.bind(this)}>I'm Feeling Lucky</button>
                 </div>
                 <div className={(this.state.appState==1)?"container-section show":"container-section"}><img src={loading} /></div>
               </div>

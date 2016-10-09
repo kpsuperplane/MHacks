@@ -7,6 +7,14 @@ import markovify
 
 from pydub import AudioSegment
 
+import nltk
+nltk.download('wordnet')
+from nltk.stem.wordnet import WordNetLemmatizer
+
+import inflect
+
+inflect_engine = inflect.engine()
+
 class S2A:
     volumns = {
         'obama': 10,
@@ -45,10 +53,11 @@ class S2A:
             return 200
     
     def find_best_match(self, word):
-        filtered = list(filter(lambda x: x[3]-x[2] >= S2A.minTimeLengthThreshold(x[0]), self.v[word]))        
+        filtered = list(filter(lambda x: S2A.minTimeLengthThreshold(x[0]) <= x[3]-x[2] <= S2A.maxTimeLengthThreshold(x[0]) , self.v[word]))        
         #print( "#" + str(len(self.v[word])-len(filtered))+"," + str(len(self.v[word])) + "#")
         best = -1e10
         ind = 0
+
         for i in range(len(filtered)):
             if filtered[i][1] > best:
                 best = filtered[i][1]
@@ -57,6 +66,8 @@ class S2A:
 
     def speech_to_audio(self, words, output):
         print(words)
+        print()
+
         if not words: return
         words = re.findall(r"[\w]+", words)
 
@@ -65,28 +76,46 @@ class S2A:
         data = []
 
         for word in words:
-            word = word.lower()
+            self.word_to_audio(word, data)
 
-            if word not in self.v and word[-1] == 's' and word[:-1] in self.v:
-                word = word[:-1]
+        #print(len(data))
+        for datum in data:
+            output.writeframes(datum)
 
-            if word not in self.v and word[-1] != 's' and word + 's' in self.v:
-                word = word + 's'
+    def word_to_audio(self, word, data):
+        word = word.lower()
 
-            if word in self.v:
-                filename = "speech/%s/"%self.name+word+"/"+self.find_best_match(word)+".wav"
+        if word not in self.v and inflect_engine.plural(word) in self.v:
+            word = inflect_engine.plural(word)
 
-                #w = wave.open(filename, 'rb')
-                clip = AudioSegment.from_wav(filename)
-                if self.name in self.volumns:
-                    clip = clip + self.volumns[self.name]
+        if word not in self.v and inflect_engine.singular_noun(word) in self.v:
+            word = inflect_engine.singular(word)
 
-                #data.append(w.readframes(w.getnframes()))
-                #w.close()
-                data.append(clip.raw_data)
+        if word not in self.v and inflect_engine.present_participle(word) in self.v:
+            word = inflect_engine.present_participle(word)
 
         for datum in data:
             output.writeframes(datum)
+
+        if word not in self.v and WordNetLemmatizer().lemmatize(word,'v') in self.v:
+            word = WordNetLemmatizer().lemmatize(word,'v')
+
+        if word in self.v:
+            filename = "speech/%s/"%self.name+word+"/"+self.find_best_match(word)+".wav"
+
+            #w = wave.open(filename, 'rb')
+            clip = AudioSegment.from_wav(filename)
+            if self.name in self.volumns:
+                clip = clip + self.volumns[self.name]
+
+            #data.append(w.readframes(w.getnframes()))
+            #w.close()
+            data.append(clip.raw_data)
+        else:
+            if word[0].isdigit():
+                num = inflect_engine.number_to_words(word)
+                for word in re.findall(r"[\w]+", num):
+                    self.word_to_audio(word, data)
 
 output = wave.open("sample.wav","wb")
 output.setnchannels(1)
