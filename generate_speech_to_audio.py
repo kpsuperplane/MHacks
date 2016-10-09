@@ -5,7 +5,15 @@ import re
 
 import markovify
 
+from pydub import AudioSegment
+
 class S2A:
+    volumns = {
+        'obama': 10,
+        'trump': -5,
+        'hillary': 10
+    }
+
     def __init__(self, name):
         self.name = name
         self.v = pickle.load(open("speech/%s.pickle"%self.name,"rb"))
@@ -23,7 +31,15 @@ class S2A:
     def find_best_match(self, word):
         best = -1e10
         ind = 0
-        return str(random.randint(0,len(self.v[word])-1))
+
+        lst = []
+        for i in range(len(self.v[word])):
+            lst.append((self.v[word][i] , i))
+
+        lst.sort(key = lambda x: x[0][3] - x[0][2])
+
+        return str(lst[len(lst)//2][1])
+
         for i in range(len(self.v[word])):
             if self.v[word][i][1] > best:
                 best = self.v[word][i][1]
@@ -33,7 +49,7 @@ class S2A:
     def speech_to_audio(self, words, output):
         print(words)
         if not words: return
-        words = re.findall(r"[\w']+", words)
+        words = re.findall(r"[\w]+", words)
 
         if len(words) == 0:
             return
@@ -49,12 +65,20 @@ class S2A:
                 word = word + 's'
 
             if word in self.v:
-                w = wave.open("speech/%s/"%self.name+word+"/"+self.find_best_match(word)+".wav", 'rb')
-                data.append([w.getparams(), w.readframes(w.getnframes())])
-                w.close()
+                filename = "speech/%s/"%self.name+word+"/"+self.find_best_match(word)+".wav"
+
+                #w = wave.open(filename, 'rb')
+                clip = AudioSegment.from_wav(filename)
+                if self.name in self.volumns:
+                    clip = clip + self.volumns[self.name]
+
+                #data.append(w.readframes(w.getnframes()))
+                #w.close()
+                data.append(clip.raw_data)
+
         print(len(data))
         for datum in data:
-            output.writeframes(datum[1])
+            output.writeframes(datum)
 
 output = wave.open("sample.wav","wb")
 output.setnchannels(1)
