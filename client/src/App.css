@@ -34,7 +34,7 @@ body, #root{
 #banner #banner-inner #banner-inner-inner{
   position:relative;
   top:50%;
-  margin-top:-200px;
+  margin-top:-300px;
 }
 #banner #banner-inner.active{
   background:rgba(0,0,0,0.9);
@@ -94,14 +94,18 @@ body, #root{
   background:transparent;
   border-style:none;
 }
+#display-text{
+  max-width: 22em;
+  margin:0 auto;
+}
 #stage{
   border-bottom:1px solid rgba(255,255,255,0.5);
-  max-width: 22em;
+  max-width: 25em;
   margin:0 auto 1em auto;
 }
 #stage img{
   vertical-align:bottom;
-  height:5em;
+  height:6em;
   opacity:0.2;
   margin:0 1em;
   display:inline-block;
