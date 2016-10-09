@@ -19,7 +19,8 @@ class S2A:
     volumns = {
         'obama': 10,
         'trump': -5,
-        'hillary': 10
+        'hillary': 10,
+        'trump2' : 10
     }
 
     special_words = {
@@ -28,7 +29,22 @@ class S2A:
         ('trump', 'and') : 9,
         ('trump', 'hillary') : 7,
         ('trump','why') : 5,
-        ('trump', 'is') : 4
+        ('trump', 'is') : 4,
+        ('trump', 'my') : 16,
+        ('trump', 'a') : 4,
+        ('trump', 'for') : 3,
+        ('trump', 'the') : 16,
+        ('trump', 'i') : 10,
+        ('trump', 'that') : 7,
+        ('trump', 'one') : 5,
+        ('trump', 'need') : 1,
+        ('trump', 'to') : 57,
+        ('trump', 'do') : 21,
+        ('trump', 'start') : 0,
+        ('trump', 'so') : 3,
+        ('trump', 'of') : 8,
+        ('trump', 'as') : 3
+        
     }
 
     def __init__(self, name, nversions):
@@ -117,8 +133,8 @@ class S2A:
 
         if (self.name, word) in S2A.special_words:
             clip = AudioSegment.from_wav("speech/%s/%s/%d.wav"%(self.name,word,S2A.special_words[(self.name,word)]))
-            if self.name in self.volumns:
-                clip = clip + self.volumns[self.name]
+            if self.name+(str(version) if version!=1 else "") in self.volumns:
+                clip = clip + self.volumns[self.name+(str(version) if version!=1 else "")]
                 if self.name == 'trump' and word == 'hillary':
                     clip = clip + 15
             data.append(clip.raw_data)
@@ -129,8 +145,8 @@ class S2A:
 
             #w = wave.open(filename, 'rb')
             clip = AudioSegment.from_wav(filename)
-            if self.name in self.volumns:
-                clip = clip + self.volumns[self.name]
+            if self.name+ (str(version) if version!=1 else "") in self.volumns:
+                clip = clip + self.volumns[self.name+(str(version) if version!=1 else "")]
 
             #data.append(w.readframes(w.getnframes()))
             #w.close()
@@ -146,11 +162,14 @@ output.setnchannels(1)
 output.setsampwidth(2)
 output.setframerate(16000)
 
-s2a = [S2A('trump',1), S2A('hillary',1), S2A('obama',2)]
+s2a = [S2A('trump',2), S2A('hillary',1), S2A('obama',2)]
 
 ##for i in range(5):
 ##    for s in s2a:
 ##        s.speech_to_audio(s.text_model.make_short_sentence(200), output)
-s2a[0].speech_to_audio('hillary is islamic', output)
+text = '''To protect us from terrorism, we need to do is start believing in ourselves and in our streets and the whole world
+that America is still free and independent and strong.'''
+s2a[0].speech_to_audio(s2a[0].text_model.make_short_sentence(200), output)
+#s2a[0].speech_to_audio(text, output)
 output.close()
 #Trump why
