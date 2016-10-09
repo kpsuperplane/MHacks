@@ -21,7 +21,8 @@ class App extends Component {
       active: false,
       appState: 0,
       input: "",
-      person: 0
+      person: 0,
+      loading: false
     }
     var instance = this;
     soundManager.onready(function(){
@@ -64,17 +65,17 @@ class App extends Component {
   }
   complete(){
     var instance = this;
-    instance.setState({appState: 0});
+    instance.setState({appState: 0, loading: false});
     setTimeout(function(){
       instance.refs.input.focus();
     }, 100);
   }
   submit(person){
-    this.setState({appState: 1});
+    this.setState({appState: 1, loading: true});
     var instance = this;
     this.playText(person, this.state.input, {
     onplay: function(){
-      instance.setState({appState: 2});
+      instance.setState({appState: 2, loading: false});
     },
     onfinish: instance.complete.bind(instance)});
   }
@@ -83,13 +84,14 @@ class App extends Component {
     instance.setState({appState: 1});
     var person = 0;
     function playNext(){
+      instance.setState({loading: true});
       person = (person + 1) % 3;
       var name = ["hillary", "trump", "obama"][person];
       request.get("/generate/phrase?person="+name).end(function(err, res){
         var text = res.text;
         instance.playText(name, text, {
           onplay: function(){
-            instance.setState({appState: 3, input: text, person: person});
+            instance.setState({appState: 3, input: text, person: person, loading: false});
           },
           onfinish: playNext});
       });
@@ -127,8 +129,8 @@ class App extends Component {
                 <div className={(this.state.appState===0)?"container-section show":"container-section"}>
                   <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this, "hillary")}>Clinton</button><button onClick={this.submit.bind(this, "trump")}>Trump</button><button onClick={this.submit.bind(this, "obama")}>Obama</button></div><button onClick={this.submitLucky.bind(this)}>I'm Feeling Lucky</button>
                 </div>
-                <div className={(this.state.appState===1)?"container-section show":"container-section"}><img src={loading} alt="Loading"/></div>
-                <div style={{marginTop:"-1em"}} className={(this.state.appState>1)?"container-section show":"container-section"}><div id="visualizer" ref="visualizer"/></div>
+                <div className={(this.state.loading)?"container-section show":"container-section"}><img src={loading} alt="Loading"/></div>
+                <div style={{marginTop:"-1em"}} className={(this.state.appState>1 && !this.state.loading)?"container-section show":"container-section"}><div id="visualizer" ref="visualizer"/></div>
               </div>
             </div>
           </div>
