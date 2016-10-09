@@ -25,23 +25,6 @@ class App extends Component {
       loading: false
     }
     var instance = this;
-    soundManager.onready(function(){
-      var lastCheck = (new Date().getTime());
-      instance.sound = soundManager.createSound({
-        autoPlay: false,
-        volume: 100,
-        usePeakData: true,
-        whileplaying: function(){
-          if(instance.state.appState > 1){
-            var now = (new Date().getTime());
-            if(now - lastCheck < 75) return;
-            lastCheck = now;
-            var peak = -Math.pow((Math.max(this.peakData.left, this.peakData.right) - 1), 2) + 1;
-            instance.refs.visualizer.style.transform = "scale("+peak+")";
-          }
-        }
-      })
-    })
   }
   playText(person, text, options = {}){
     var lastCheck = (new Date().getTime());
