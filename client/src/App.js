@@ -63,10 +63,11 @@ class App extends Component {
     }, options));
   }
   complete(){
-      instance.setState({appState: 0, input: ""});
-      setTimeout(function(){
-        instance.refs.input.focus();
-      }, 100);
+    var instance = this;
+    instance.setState({appState: 0, input: ""});
+    setTimeout(function(){
+      instance.refs.input.focus();
+    }, 100);
   }
   submit(){
     this.setState({appState: 1});
