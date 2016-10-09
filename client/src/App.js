@@ -116,7 +116,7 @@ class App extends Component {
           <video src={boat} autoPlay={true} onPlay={this.videoPlayed.bind(this)} loop="loop"/>
           <div id="banner-inner" className={this.state.active?"active":""}>
             <div id="banner-inner-inner" className={(this.state.appState===0)?"typing":""}>
-              <h1>ObashleyTrumpison</h1>
+              <h1>HilarityTrumpton</h1>
               <div id="typing-container">
                 {(this.state.appState===3)?(<div id="stage">
                   <img src={clinton} style={this.state.person===0?{opacity:1}:null} alt="Clinton" />
