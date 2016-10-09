@@ -28,24 +28,30 @@ class S2A:
 
         self.text_model = markovify.Text(text)
 
+    def minTimeLengthThreshold(word):
+        if len(word) <= 4:
+            return 15
+        if len(word) <= 7:
+            return 40
+        else:
+            return 40
+
+    def maxTimeLengthThreshold(word):
+        if len(word) <= 4:
+            return 50
+        if len(word) <= 7:
+            return 100
+        else:
+            return 200
+    
     def find_best_match(self, word):
+        filtered = list(filter(lambda x: x[3]-x[2] >= S2A.minTimeLengthThreshold(x[0]), self.v[word]))        
+        #print( "#" + str(len(self.v[word])-len(filtered))+"," + str(len(self.v[word])) + "#")
         best = -1e10
         ind = 0
-
-        lst = []
-        for i in range(len(self.v[word])):
-            if self.name == 'trump':
-                if self.v[word][i][3]/100 < 180:
-                    continue
-            lst.append((self.v[word][i] , i))
-
-        lst.sort(key = lambda x: x[0][3] - x[0][2])
-
-        return str(lst[len(lst)//2][1])
-
-        for i in range(len(self.v[word])):
-            if self.v[word][i][1] > best:
-                best = self.v[word][i][1]
+        for i in range(len(filtered)):
+            if filtered[i][1] > best:
+                best = filtered[i][1]
                 ind = i
         return str(ind)
 
@@ -79,7 +85,6 @@ class S2A:
                 #w.close()
                 data.append(clip.raw_data)
 
-        print(len(data))
         for datum in data:
             output.writeframes(datum)
 
