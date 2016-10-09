@@ -5,6 +5,8 @@ words/*
 speech/*.mp4
 speech/*.wav
 
+sample-o.*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
