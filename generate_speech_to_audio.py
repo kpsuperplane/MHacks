@@ -51,9 +51,9 @@ class S2A:
             return 100
         else:
             return 200
-    
+
     def find_best_match(self, word):
-        filtered = list(filter(lambda x: S2A.minTimeLengthThreshold(x[0]) <= x[3]-x[2] <= S2A.maxTimeLengthThreshold(x[0]) , self.v[word]))        
+        filtered = list(filter(lambda x: S2A.minTimeLengthThreshold(x[0]) <= x[3]-x[2] <= S2A.maxTimeLengthThreshold(x[0]) , self.v[word]))
         #print( "#" + str(len(self.v[word])-len(filtered))+"," + str(len(self.v[word])) + "#")
         best = -1e10
         ind = 0
@@ -93,9 +93,6 @@ class S2A:
 
         if word not in self.v and inflect_engine.present_participle(word) in self.v:
             word = inflect_engine.present_participle(word)
-
-        for datum in data:
-            output.writeframes(datum)
 
         if word not in self.v and WordNetLemmatizer().lemmatize(word,'v') in self.v:
             word = WordNetLemmatizer().lemmatize(word,'v')
