@@ -19,7 +19,7 @@ def root():
     print("Hello World!")
     return app.send_static_file("index.html")
 
-def gen_phrase(person, text):
+def gen_audio(person, text):
     #person: 'trump', 'hillary', or 'obama'
     output = wave.open("sample-o.wav", "wb")
     output.setnchannels(1)
@@ -33,7 +33,10 @@ def gen_phrase(person, text):
     except Exception as e:
 	return str(e)
     
-#def gen_song(person):
+def gen_phrase(person):
+    s = S2A(person)
+    return s.text_model.make_short_sentence(200)
+    #markov shit
 
 if __name__ == "__main__":
     app.run()
