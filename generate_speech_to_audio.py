@@ -26,6 +26,8 @@ class S2A:
     special_words = {
         ('hillary', 'when') : 18,
         ('hillary', 'who') : 13,
+        ('hillary', 'if') : 52,
+        ('hillary', 'why') : 4,
         ('trump', 'and') : 9,
         ('trump', 'hillary') : 7,
         ('trump','why') : 5,
@@ -52,7 +54,10 @@ class S2A:
         ('trump', 'way') : 1,
         ('trump', 'there') : 3,
         ('trump', 'up') : 4,
-        ('trump', 'no') : 0        
+        ('trump', 'no') : 0,
+        ('trump', 'if') : 1,
+        ('trump', 'instead') : 0
+        
     }
 
     def __init__(self, name, nversions):
@@ -126,7 +131,8 @@ class S2A:
 
     def word_to_audio(self, word, data, version):
         word = word.lower()
-
+        if word == 'isil' and self.name == 'obama':
+            word = 'isis'
         if word not in self.v[version-1] and inflect_engine.plural(word) in self.v[version-1]:
             word = inflect_engine.plural(word)
 
@@ -183,7 +189,7 @@ s2a = [S2A('trump',2), S2A('hillary',1), S2A('obama',2)]
 ##for i in range(5):
 ##    for s in s2a:
 ##        s.speech_to_audio(s.text_model.make_short_sentence(200), output)
-text = 'there is no war up in the united states'
+#text = 'i am 16'
 #s2a[0].speech_to_audio(s2a[0].text_model.make_short_sentence(200), output)
 #s2a[0].speech_to_audio(text, output)
 output.close()
