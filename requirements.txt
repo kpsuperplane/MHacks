@@ -2,3 +2,5 @@ moviepy
 nltk
 pocketsphinx
 scipy
+markovify
+pydub
