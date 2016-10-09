@@ -64,7 +64,7 @@ class App extends Component {
   }
   complete(){
     var instance = this;
-    instance.setState({appState: 0, input: ""});
+    instance.setState({appState: 0});
     setTimeout(function(){
       instance.refs.input.focus();
     }, 100);
