@@ -4,3 +4,4 @@ pocketsphinx
 scipy
 markovify
 pydub
+flask
