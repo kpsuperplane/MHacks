@@ -58,7 +58,6 @@ body, #root{
   color:#FFF;
 }
 #banner #button-container{
-  overflow:hidden;
   opacity:0;
   transition:all 1000ms;
   transition-delay: 1500ms;
@@ -95,6 +94,27 @@ body, #root{
   background:transparent;
   border-style:none;
 }
+#stage{
+  border-bottom:1px solid rgba(255,255,255,0.5);
+  max-width: 22em;
+  margin:0 auto 1em auto;
+}
+#stage img{
+  vertical-align:bottom;
+  height:5em;
+  opacity:0.2;
+  margin:0 1em;
+  display:inline-block;
+}
+#visualizer{
+  height:50px;
+  width:50px;
+  background:rgba(46, 203, 255, 0.5);
+  border-radius:100%;
+  display:inline-block;
+  transition: transform 75ms;
+  transform: scale(0);
+}
 button{
   text-align:center;
   border-style:none;
@@ -103,6 +123,7 @@ button{
   position:relative;
   font-size:2em;
   opacity:0.9;
+  vertical-align:top;
   margin:1em;
   padding:0;
   cursor:pointer;
