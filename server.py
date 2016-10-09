@@ -5,7 +5,7 @@ from src.TimeStamp import TimeStamp
 from src.editor import *
 import os, wave,pickle,random
 import re
-
+import pydub import AudioSegment
 import markovify
 
 ##
@@ -28,15 +28,17 @@ def gen_audio(person, text):
     s = S2A(person)
     s.speech_to_audio(text,output)
     output.close()
+    AudioSegment.from_wav("sample-o.wav").export("sample-o.mp3", format="mp3")
     try:
-	return send_file('sample-o.wav', attachment_filename='sample-o.wav')
+	return send_file('sample-o.mp3', attachment_filename='sample-o.mp3')
     except Exception as e:
 	return str(e)
     
 def gen_phrase(person):
+    #markov shit
     s = S2A(person)
     return s.text_model.make_short_sentence(200)
-    #markov shit
+    
 
 if __name__ == "__main__":
     app.run()
