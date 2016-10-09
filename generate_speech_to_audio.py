@@ -57,7 +57,7 @@ class S2A:
         ('trump', 'no') : 0,
         ('trump', 'if') : 1,
         ('trump', 'instead') : 0
-        
+
     }
 
     def __init__(self, name, nversions):
@@ -66,7 +66,7 @@ class S2A:
         self.nversions = nversions
         for i in range(1,nversions+1):
             self.v.append(pickle.load(open("speech/%s.pickle"%(self.name + (str(i) if i!=1 else "")),"rb")))
-        
+
         #text = re.findall(r"\w+|[^\w\s]", text, re.UNICODE)
         #text = " ".join(filter(lambda x: not x.isalpha() or x in v, text))
 
@@ -76,7 +76,7 @@ class S2A:
             text = f.read()
             if self.name == 'obama':
                 with open("speech/obama2.txt") as f2:
-                    text += f.read()
+                    text += f2.read()
 
         self.text_model = markovify.Text(text)
 
@@ -175,9 +175,9 @@ class S2A:
             data.append(clip.raw_data)
             return True
         return False
-                
 
-        
+
+
 
 output = wave.open("sample.wav","wb")
 output.setnchannels(1)
