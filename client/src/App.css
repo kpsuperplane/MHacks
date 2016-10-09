@@ -60,7 +60,7 @@ body, #root{
 #banner #button-container{
   opacity:0;
   transition:all 1000ms;
-  transition-delay: 1500ms;
+  transition-delay: 1000ms;
 }
 .container-section{
   max-height:0;
@@ -134,7 +134,7 @@ button{
 }
 .hider{
   overflow:hidden;
-  max-width:150px;
+  max-width:330px;
   transition:all 500ms;
   white-space: nowrap;
   display:inline-block;

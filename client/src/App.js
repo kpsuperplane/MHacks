@@ -63,15 +63,16 @@ class App extends Component {
     }, options));
   }
   complete(){
-      instance.setState({appState: 0, input: ""});
-      setTimeout(function(){
-        instance.refs.input.focus();
-      }, 100);
+    var instance = this;
+    instance.setState({appState: 0});
+    setTimeout(function(){
+      instance.refs.input.focus();
+    }, 100);
   }
-  submit(){
+  submit(person){
     this.setState({appState: 1});
     var instance = this;
-    this.playText("hillary", this.state.input, {
+    this.playText(person, this.state.input, {
     onplay: function(){
       instance.setState({appState: 2});
     },
@@ -101,12 +102,7 @@ class App extends Component {
     setTimeout(function(){
       makeActive();
       refs.input.focus();
-    }, 2000);
-  }
-  handleInputKeyPress(e){
-    if (e.key === 'Enter') {
-      this.submit();
-    }
+    }, 1000);
   }
   type(e){
     this.setState({input: e.target.value});
@@ -125,11 +121,11 @@ class App extends Component {
                   <img src={trump} style={this.state.person===1?{opacity:1}:null} alt="Trump" />
                   <img src={obama} style={this.state.person===2?{opacity:1}:null} alt="Obama" />
                 </div>):null}
-                {(this.state.appState===0)?(<input type="text" value={this.state.input} onKeyPress={this.handleInputKeyPress.bind(this)} onChange={this.type.bind(this)} ref="input" placeholder="Type Right Here and Make Me Great Again &trade;"/>):(<div id="display-text">{this.state.input}</div>)}
+                {(this.state.appState===0)?(<input type="text" value={this.state.input} onChange={this.type.bind(this)} ref="input" placeholder="Type Right Here and Make Me Great Again &trade;"/>):(<div id="display-text">{this.state.input}</div>)}
               </div>
               <div id="button-container">
                 <div className={(this.state.appState===0)?"container-section show":"container-section"}>
-                  <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this)}>Make My Own</button></div><button onClick={this.submitLucky.bind(this)}>I'm Feeling Lucky</button>
+                  <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this, "hillary")}>Clinton</button><button onClick={this.submit.bind(this, "trump")}>Trump</button><button onClick={this.submit.bind(this, "obama")}>Obama</button></div><button onClick={this.submitLucky.bind(this)}>I'm Feeling Lucky</button>
                 </div>
                 <div className={(this.state.appState===1)?"container-section show":"container-section"}><img src={loading} alt="Loading"/></div>
                 <div style={{marginTop:"-1em"}} className={(this.state.appState>1)?"container-section show":"container-section"}><div id="visualizer" ref="visualizer"/></div>
