@@ -21,6 +21,7 @@ class S2A:
         'trump': -5,
         'hillary': 10,
         'trump2' : 10,
+        'trump3' : 15,
         "obama2": 15,
     }
 
@@ -174,7 +175,6 @@ class S2A:
             clip = AudioSegment.from_wav(filename)
             if self.name+ (str(version) if version!=1 else "") in self.volumns:
                 clip = clip + self.volumns[self.name+(str(version) if version!=1 else "")]
-
             #data.append(w.readframes(w.getnframes()))
             #w.close()
             data.append(clip.raw_data)

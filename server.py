@@ -19,7 +19,7 @@ def root():
     return app.send_static_file("index.html")
 
 
-s2a = {'trump': S2A('trump',2), 'hillary': S2A('hillary',1), 'obama': S2A('obama',2)}
+s2a = {'trump': S2A('trump',4), 'hillary': S2A('hillary',1), 'obama': S2A('obama',2)}
 
 @app.route('/generate/audio')
 def gen_audio():
