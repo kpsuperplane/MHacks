@@ -34,6 +34,9 @@ class S2A:
 
         lst = []
         for i in range(len(self.v[word])):
+            if self.name == 'trump':
+                if self.v[word][i][3]/100 < 180:
+                    continue
             lst.append((self.v[word][i] , i))
 
         lst.sort(key = lambda x: x[0][3] - x[0][2])
