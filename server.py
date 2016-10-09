@@ -18,6 +18,9 @@ app = Flask(__name__, static_folder='client/build/', static_url_path='')
 def root():
     return app.send_static_file("index.html")
 
+
+s2a = {'trump': S2A('trump',2), 'hillary': S2A('hillary',1), 'obama': S2A('obama',2)}
+
 @app.route('/generate/audio')
 def gen_audio():
     person = request.args.get("person")
@@ -27,22 +30,22 @@ def gen_audio():
     output.setnchannels(1)
     output.setsampwidth(2)
     output.setframerate(16000)
-    s = S2A(person)
+    s = s2a[person]
     s.speech_to_audio(text,output)
     output.close()
     AudioSegment.from_wav("sample-o.wav").export("sample-o.mp3", format="mp3")
     try:
-	    return send_file('sample-o.mp3', attachment_filename='sample-o.mp3')
+        return send_file('sample-o.mp3', attachment_filename='sample-o.mp3')
     except Exception as e:
-	    return str(e)
-    
+        return str(e)
+
 @app.route('/generate/phrase')
 def gen_phrase():
     person = request.args.get("person")
     #markov shit
-    s = S2A(person)
+    s = s2a[person]
     return s.text_model.make_short_sentence(200)
-    
+
 
 if __name__ == "__main__":
     app.run()

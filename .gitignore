@@ -2,12 +2,8 @@ scratch
 
 words/*
 
-speech/trump.mp4
-speech/trump.wav
-speech/obama.mp4
-speech/obama.wav
-speech/hillary.mp4
-speech/hillary.wav
+speech/*.mp4
+speech/*.wav
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
