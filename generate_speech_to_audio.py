@@ -17,7 +17,7 @@ inflect_engine = inflect.engine()
 
 class S2A:
     volumns = {
-        'obama': 10,
+        'obama': 20,
         'trump': -5,
         'hillary': 10,
         'trump2' : 10
@@ -43,8 +43,16 @@ class S2A:
         ('trump', 'start') : 0,
         ('trump', 'so') : 3,
         ('trump', 'of') : 8,
-        ('trump', 'as') : 3
-        
+        ('trump', 'as') : 3,
+        ('trump', 'united') : 0,
+        ('trump', 'states') : 1,
+        ('trump', 'presidency') : 0,
+        ('trump', 'does' ) : 0,
+        ('trump', 'be') : 5,
+        ('trump', 'way') : 1,
+        ('trump', 'there') : 3,
+        ('trump', 'up') : 4,
+        ('trump', 'no') : 0        
     }
 
     def __init__(self, name, nversions):
@@ -131,6 +139,12 @@ class S2A:
         if word not in self.v[version-1] and WordNetLemmatizer().lemmatize(word,'v') in self.v[version-1]:
             word = WordNetLemmatizer().lemmatize(word,'v')
 
+        if word not in self.v[version-1] and word[-2:] == 'ed' and word[:-1] in self.v[version-1]:
+            word = word[:-1]
+
+        if word == 'announce':
+            word = 'announced'
+
         if (self.name, word) in S2A.special_words:
             clip = AudioSegment.from_wav("speech/%s/%s/%d.wav"%(self.name,word,S2A.special_words[(self.name,word)]))
             if self.name+(str(version) if version!=1 else "") in self.volumns:
@@ -144,6 +158,8 @@ class S2A:
             filename = "speech/%s/"%(self.name+(str(version) if version!=1 else ""))+word+"/"+self.find_best_match(word,version)+".wav"
 
             #w = wave.open(filename, 'rb')
+            if not os.path.isfile(filename):
+                return False
             clip = AudioSegment.from_wav(filename)
             if self.name+ (str(version) if version!=1 else "") in self.volumns:
                 clip = clip + self.volumns[self.name+(str(version) if version!=1 else "")]
@@ -167,9 +183,8 @@ s2a = [S2A('trump',2), S2A('hillary',1), S2A('obama',2)]
 ##for i in range(5):
 ##    for s in s2a:
 ##        s.speech_to_audio(s.text_model.make_short_sentence(200), output)
-text = '''To protect us from terrorism, we need to do is start believing in ourselves and in our streets and the whole world
-that America is still free and independent and strong.'''
-s2a[0].speech_to_audio(s2a[0].text_model.make_short_sentence(200), output)
+text = 'there is no war up in the united states'
+#s2a[0].speech_to_audio(s2a[0].text_model.make_short_sentence(200), output)
 #s2a[0].speech_to_audio(text, output)
 output.close()
 #Trump why
