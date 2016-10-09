@@ -20,7 +20,8 @@ class S2A:
         'obama': 20,
         'trump': -5,
         'hillary': 10,
-        'trump2' : 10
+        'trump2' : 10,
+        "obama2": 15,
     }
 
     special_words = {
@@ -76,6 +77,10 @@ class S2A:
             text = f.read()
             if self.name == 'obama':
                 with open("speech/obama2.txt") as f2:
+                    text += f2.read()
+
+            if self.name == 'trump':
+                with open("speech/trump2.txt") as f2:
                     text += f2.read()
 
         self.text_model = markovify.Text(text)
