@@ -6,6 +6,8 @@ import sample from './young.mp3';
 import clinton from './clinton.png';
 import trump from './trump.png';
 import obama from './obama.png';
+import request from 'superagent';
+import * as q from 'q';
 import {soundManager} from 'soundmanager2';
 console.log(soundManager);
 soundManager.setup({
@@ -24,13 +26,16 @@ class App extends Component {
     }
     var instance = this;
     soundManager.onready(function(){
+      var lastCheck = (new Date().getTime());
       instance.sound = soundManager.createSound({
-        url: sample,
-        autoPlay: true,
+        autoPlay: false,
         volume: 100,
         usePeakData: true,
         whileplaying: function(){
           if(instance.state.appState > 1){
+            var now = (new Date().getTime());
+            if(now - lastCheck < 75) return;
+            lastCheck = now;
             var peak = -Math.pow((Math.max(this.peakData.left, this.peakData.right) - 1), 2) + 1;
             instance.refs.visualizer.style.transform = "scale("+peak+")";
           }
@@ -38,11 +43,43 @@ class App extends Component {
       })
     })
   }
+  playText(person, text, options = {}){
+    var lastCheck = (new Date().getTime());
+    var instance = this;
+    return soundManager.createSound(Object.assign({
+      url: "/generate/audio?person="+person+"&text="+encodeURIComponent(text),
+      autoPlay: true,
+      volume: 100,
+      usePeakData: true,
+      stream: true,
+      whileplaying: function(){
+        if(instance.state.appState > 1){
+          var now = (new Date().getTime());
+          if(now - lastCheck < 75) return;
+          lastCheck = now;
+          var peak = -Math.pow((Math.max(this.peakData.left, this.peakData.right) - 1), 2) + 1;
+          instance.refs.visualizer.style.transform = "scale("+peak+")";
+        }
+      }
+    }, options));
+  }
   submit(){
     this.setState({appState: 1});
+    var instance = this;
+    this.playText("hillary", this.state.input, {
+    onplay: function(){
+      instance.setState({appState: 2});
+    },
+    onfinish: function(){
+      instance.setState({appState: 0, input: ""});
+      setTimeout(function(){
+        instance.refs.input.focus();
+      }, 100);
+    }});
   }
   submitLucky(){
     this.setState({appState: 3, input: '', person: 1});
+    refs.input.focus();
   }
   videoPlayed(){
     var makeActive = this.setState.bind(this, {active: true});

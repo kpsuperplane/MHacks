@@ -6,8 +6,10 @@
     "react-scripts": "0.6.1"
   },
   "dependencies": {
+    "q": "^1.4.1",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "superagent": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
