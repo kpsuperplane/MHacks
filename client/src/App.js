@@ -69,10 +69,10 @@ class App extends Component {
       instance.refs.input.focus();
     }, 100);
   }
-  submit(){
+  submit(person){
     this.setState({appState: 1});
     var instance = this;
-    this.playText("hillary", this.state.input, {
+    this.playText(person, this.state.input, {
     onplay: function(){
       instance.setState({appState: 2});
     },
@@ -102,7 +102,7 @@ class App extends Component {
     setTimeout(function(){
       makeActive();
       refs.input.focus();
-    }, 2000);
+    }, 1000);
   }
   handleInputKeyPress(e){
     if (e.key === 'Enter') {
@@ -130,7 +130,7 @@ class App extends Component {
               </div>
               <div id="button-container">
                 <div className={(this.state.appState===0)?"container-section show":"container-section"}>
-                  <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this)}>Make My Own</button></div><button onClick={this.submitLucky.bind(this)}>I'm Feeling Lucky</button>
+                  <div className={this.state.input?"hider":"hider hidden"}><button onClick={this.submit.bind(this, "clinton")}>Clinton</button><button onClick={this.submit.bind(this, "trump")}>Trump</button><button onClick={this.submit.bind(this, "obama")}>Obama</button></div><button onClick={this.submitLucky.bind(this)}>I'm Feeling Lucky</button>
                 </div>
                 <div className={(this.state.appState===1)?"container-section show":"container-section"}><img src={loading} alt="Loading"/></div>
                 <div style={{marginTop:"-1em"}} className={(this.state.appState>1)?"container-section show":"container-section"}><div id="visualizer" ref="visualizer"/></div>
