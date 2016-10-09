@@ -9,7 +9,6 @@ import obama from './obama.png';
 import request from 'superagent';
 import * as q from 'q';
 import {soundManager} from 'soundmanager2';
-console.log(soundManager);
 soundManager.setup({
   url: process.env.PUBLIC_URL + '/swf',
   useHTML5Audio: false,
@@ -63,6 +62,12 @@ class App extends Component {
       }
     }, options));
   }
+  complete(){
+      instance.setState({appState: 0, input: ""});
+      setTimeout(function(){
+        instance.refs.input.focus();
+      }, 100);
+  }
   submit(){
     this.setState({appState: 1});
     var instance = this;
@@ -70,16 +75,25 @@ class App extends Component {
     onplay: function(){
       instance.setState({appState: 2});
     },
-    onfinish: function(){
-      instance.setState({appState: 0, input: ""});
-      setTimeout(function(){
-        instance.refs.input.focus();
-      }, 100);
-    }});
+    onfinish: instance.complete});
   }
   submitLucky(){
-    this.setState({appState: 3, input: '', person: 1});
-    refs.input.focus();
+    var instance = this;
+    instance.setState({appState: 1});
+    var person = 1;
+    function playNext(){
+      person += 1;
+      var name = ["hillary", "trump", "obama"][person];
+      request.get("/generate/phrase").end(function(text){
+        this.playText(name, text, {
+        onplay: function(){
+          instance.setState({appState: 3, input: text, person: person});
+        },
+        onfinish: playNext});
+      });
+      if(person > 2) person = 0; //reset counter
+    }
+    playNext();
   }
   videoPlayed(){
     var makeActive = this.setState.bind(this, {active: true});
@@ -101,7 +115,7 @@ class App extends Component {
     return (
       <div className="app">
         <div id="banner">
-          <video src={boat} autoPlay={true} onPlay={this.videoPlayed.bind(this)} loop={true}/>
+          <video src={boat} autoPlay={true} onPlay={this.videoPlayed.bind(this)} loop="loop"/>
           <div id="banner-inner" className={this.state.active?"active":""}>
             <div id="banner-inner-inner" className={(this.state.appState===0)?"typing":""}>
               <h1>ObashleyTrumpison</h1>
