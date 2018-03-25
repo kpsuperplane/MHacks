@@ -5,6 +5,14 @@ words/*
 speech/*.mp4
 speech/*.wav
 
+speech/hillary/build/
+speech/trump3.pickle
+speech/trump3/
+speech/trump4.pickle
+speech/trump4/
+trump3.mp4
+trumpchina.mp4
+
 sample-o.*
 
 # Byte-compiled / optimized / DLL files
